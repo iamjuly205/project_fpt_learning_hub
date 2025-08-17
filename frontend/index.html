@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="FPT Learning Hub - Học nhạc cụ dân tộc và Vovinam truyền thống miễn phí.">
+    <meta name="keywords" content="FPT, học online, nhạc cụ, Vovinam, giáo dục">
+    <meta name="author" content="AI 19C & Bard">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title data-translate="title">FPT Learning Hub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="theory-styles.css">
+    <link rel="stylesheet" href="modal-styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Montserrat:wght@300;400;500;600;700&family=Noto+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" onload="this.rel='stylesheet'">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet" onload="this.rel='stylesheet'">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" defer></script>
+    <script src="data/flashcards.js"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader">
+        <div class="spinner"></div>
+        <span data-translate="loading">Đang tải...</span>
+    </div>
+
+    <!-- Header -->
+    <header class="sticky-header">
+        <div class="container">
+            <div class="header-wrapper">
+                <div class="logo-text-container" onclick="resetToHomePage()" title="Về trang chủ">
+                    <h1 class="logo-text animated-logo">FPT Learning Hub</h1>
+                </div>
+                <nav>
+                    <ul class="nav-menu">
+                        <li class="dropdown">
+                            <a href="#" data-section="explore" data-translate="explore">Khám phá</a>
+                            <div class="dropdown-content">
+                                <a href="#" data-section="instruments" data-translate="instruments"><i class="fas fa-music"></i> Nhạc cụ dân tộc</a>
+                                <a href="#" data-section="martial-arts" data-translate="martial-arts"><i class="fas fa-fist-raised"></i> Võ thuật</a>
+                            </div>
+                        </li>
+                        <li><a href="#" data-section="flashcards" data-translate="flashcards"><i class="fas fa-clone"></i> Ôn Tập Flashcard</a></li>
+                        <li><a href="#" data-section="ranking" data-translate="ranking"><i class="fas fa-trophy"></i> Xếp hạng</a></li>
+                        <li class="dropdown">
+                            <a href="#" data-translate="activities"><i class="fas fa-tasks"></i> Hoạt động</a>
+                            <div class="dropdown-content">
+                                <a href="#" data-section="challenges" data-translate="challenges"><i class="fas fa-flag"></i> Thử thách</a>
+                                <a href="#" data-section="mini-games" data-translate="mini-games"><i class="fas fa-gamepad"></i> Mini-game</a>
+                            </div>
+                        </li>
+                        <li><a href="#" data-section="teacher-dashboard" data-translate="teacher-dashboard" style="display: none;"><i class="fas fa-chalkboard-teacher"></i> Giảng viên</a></li>
+                        <li><a href="#" data-section="feedback" data-translate="feedback"><i class="fas fa-comment-dots"></i> Phản hồi</a></li>
+                    </ul>
+                </nav>
+                <div class="header-right" id="user-section">
+                    <div class="search-bar">
+                        <input type="text" id="search" data-translate-placeholder="search-placeholder" placeholder="Tìm kiếm..." list="search-suggestions">
+                        <datalist id="search-suggestions"></datalist>
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <button class="icon-btn theme-toggle ripple-btn" data-translate-title="true" data-translate="toggle-theme" title="Đổi giao diện">
+                        <i class="fas fa-sun theme-icon-light"></i>
+                        <i class="fas fa-moon theme-icon-dark"></i>
+                    </button>
+                    <button class="icon-btn language-toggle ripple-btn" id="language-toggle" data-lang="vi" data-translate-title="true" data-translate="toggle-language" title="Chuyển đổi ngôn ngữ">
+                        <i class="fas fa-flag"></i>
+                    </button>
+                    <button class="auth-btn login-btn ripple-btn" id="login-btn" data-translate-title="true" data-translate="login" title="Đăng nhập"><i class="fas fa-sign-in-alt"></i> <span data-translate="login">Đăng nhập</span></button>
+                    <button class="auth-btn signup-btn ripple-btn" id="signup-btn" data-translate-title="true" data-translate="signup" title="Đăng ký"><i class="fas fa-user-plus"></i> <span data-translate="signup">Đăng ký</span></button>
+                    <div class="avatar-container">
+                        <img id="user-avatar" src="https://via.placeholder.com/50?text=?" alt="Avatar" class="user-avatar ripple-btn" style="display: none;" onclick="showSection('profile')" title="Xem hồ sơ">
+                    </div>
+                    <button id="logout-btn" class="icon-btn ripple-btn" style="display: none;" onclick="logout()" data-translate-title="true" data-translate="logout" title="Đăng xuất"><i class="fas fa-sign-out-alt"></i></button>
+                </div>
+                <div class="hamburger" aria-label="Mở menu" role="button" tabindex="0">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero parallax" id="hero-section">
+        <canvas id="particles-js"></canvas>
+        <div class="hero-content">
+            <div class="hero-logo-container">
+                <div class="hero-logo">
+                    <img src="./assets/images/fpt-360-image.png" alt="" class="hero-logo-img">
+                </div>
+            </div>
+            <h1 class="hero-title" data-translate="hero-title">Học Vovinam & Nhạc Cụ Truyền Thống</h1>
+            <p class="hero-subtitle" data-translate="hero-desc">Khám phá văn hóa Việt qua các khóa học miễn phí.</p>
+            <div class="hero-buttons">
+                <button class="hero-btn hero-btn-primary" onclick="showLearningPage()" data-translate="start-now"><i class="fas fa-play-circle"></i> Bắt đầu ngay</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Notification Area -->
+    <div id="notification" class="notification" role="alert" aria-live="assertive"></div>
+
+    <!-- Learning Page -->
+    <section id="learning-page" class="section" style="display: none;">
+        <div class="container">
+            <h2 data-translate="explore">Khóa Học Truyền Thống</h2>
+            <div class="learning-content">
+                <!-- Instruments -->
+                <div class="learning-section" id="instruments">
+                    <h3 data-translate="instruments">Nhạc Cụ Dân Tộc</h3>
+                    <div class="content-grid" id="instrument-grid"><p class="loading-message" data-translate="loading-courses">Đang tải khóa học...</p></div>
+                </div>
+                <!-- Martial Arts -->
+                <div class="learning-section" id="martial-arts">
+                    <h3 data-translate="martial-arts">Võ Vovinam</h3>
+                    <div class="content-grid" id="martial-grid"><p class="loading-message" data-translate="loading-courses">Đang tải khóa học...</p></div>
+                </div>
+                <!-- Personal Courses -->
+                <div class="learning-section" id="personal-courses">
+                    <h3 data-translate="my-courses">Khóa Học Của Tôi</h3>
+                    <div class="content-grid droppable" id="personal-courses-grid"><p class="placeholder" data-translate="no-personal-courses">Kéo khóa học vào đây...</p></div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Flashcard Section -->
+    <section id="flashcards" class="section" style="display: none;">
+        <div class="container">
+            <h2 data-translate="flashcards">Ôn Tập Flashcard</h2>
+            <div class="flashcard-container">
+                <div class="flashcard-controls-top">
+                    <select id="flashcard-category" class="flashcard-select" aria-label="Chọn danh mục Flashcard">
+                        <option value="sao" data-translate="sao">Sáo</option>
+                        <option value="dan-tranh" data-translate="dan-tranh">Đàn Tranh</option>
+                        <option value="dan-nguyet" data-translate="dan-nguyet">Đàn Nguyệt</option>
+                        <option value="vovinam" data-translate="vovinam">Vovinam</option>
+                    </select>
+                    <div class="flashcard-top-buttons">
+                        <button id="random-test-btn" class="ripple-btn" data-translate="random-test">Kiểm tra ngẫu nhiên</button>
+                        <button id="save-progress-btn" class="ripple-btn" data-translate="save-progress">Lưu tiến độ</button>
+                    </div>
+                </div>
+                <div class="flashcard-category-info">
+                    <div class="flashcard-category-indicator" id="flashcard-category-indicator">Sáo</div>
+                    <div class="flashcard-number-indicator" id="flashcard-number-indicator">1/10</div>
+                </div>
+                <div class="flashcard-progress-container">
+                    <div class="flashcard-progress-bar" id="flashcard-progress-bar" style="width: 0%"></div>
+                </div>
+                <div class="flashcard-wrapper">
+                    <div id="flashcard" class="flashcard" tabindex="0" aria-live="polite" title="Nhấn để lật thẻ">
+                        <div class="flashcard-front" aria-label="Mặt trước thẻ">
+                            <div class="flashcard-content">
+                                <p class="placeholder" data-translate="loading-flashcards">Đang tải...</p>
+                            </div>
+                        </div>
+                        <div class="flashcard-back" aria-label="Mặt sau thẻ">
+                            <div class="flashcard-content">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flashcard-progress">
+                        <span id="flashcard-progress-text">0 / 0</span>
+                    </div>
+                </div>
+                <div class="flashcard-controls">
+                    <button id="prev-card" class="flashcard-btn" data-translate-title="true" data-translate="prev-card" title="Thẻ trước"><i class="fas fa-arrow-left"></i> <span data-translate="prev">Trước</span></button>
+                    <button id="mark-known" class="flashcard-btn" title="Đánh dấu đã biết"><i class="fas fa-check"></i> <span data-translate="mark-known">Đã biết</span></button>
+                    <button id="next-card" class="flashcard-btn" data-translate-title="true" data-translate="next-card" title="Thẻ sau"><span data-translate="next">Tiếp</span> <i class="fas fa-arrow-right"></i></button>
+                    <button id="test-flashcard" class="flashcard-btn" data-translate="test-now"><i class="fas fa-check-circle"></i> <span data-translate="test">Kiểm tra</span></button>
+                    <button id="shuffle-cards" class="flashcard-btn" title="Xáo trộn thẻ"><i class="fas fa-random"></i> <span data-translate="shuffle">Xáo trộn</span></button>
+                </div>
+                <div class="flashcard-stats" id="flashcard-stats">
+                    <p><span data-translate="progress">Tiến độ</span>: <span id="flashcard-progress-percentage">0%</span></p>
+                    <p><span data-translate="points">Điểm số (Test)</span>: <span id="flashcard-score">0</span></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Flashcard Test Modal -->
+    <div id="flashcard-test-modal" class="modal">
+        <div class="modal-content glass">
+            <span class="close-modal" data-translate-title="true" data-translate="close" title="Đóng"><i class="fas fa-times"></i></span>
+            <h2 data-translate="flashcards">Kiểm Tra Flashcard</h2>
+            <div id="flashcard-test-content" class="flashcard-test-content"><p class="placeholder">Đang tạo bài kiểm tra...</p></div>
+            <button id="submit-test" class="ripple-btn" data-translate="submit-test">Nộp bài</button>
+            <div id="test-result" class="test-result" style="margin-top: 15px;"></div>
+        </div>
+    </div>
+
+    <!-- Challenges Section -->
+    <section id="challenges" class="section" style="display: none;">
+        <div class="container">
+            <div class="challenge-header">
+                <h2 data-translate="challenges">Thử Thách Hàng Ngày</h2>
+                <div class="challenge-timer">
+                    <i class="fas fa-clock"></i>
+                    <span data-translate="time-remaining">Thời gian còn lại:</span>
+                    <span class="timer-value" id="challenge-timer">23:59:59</span>
+                </div>
+            </div>
+
+            <div class="challenge-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="completed-challenges">0</span>
+                    <span class="stat-label" data-translate="completed-challenges">Đã hoàn thành</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="challenge-streak">0</span>
+                    <span class="stat-label" data-translate="challenge-streak">Thử thách đã làm</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="challenge-points">0</span>
+                    <span class="stat-label" data-translate="points-earned">Điểm nhận được</span>
+                </div>
+            </div>
+
+            <div class="teacher-actions" id="challenge-teacher-actions" style="display: none;">
+                <button id="challenge-teacher-dashboard-btn" class="action-btn ripple-btn" onclick="showSection('teacher-dashboard')">
+                    <i class="fas fa-chalkboard-teacher"></i> <span data-translate="teacher-dashboard">Giảng viên</span>
+                </button>
+            </div>
+
+            <div class="challenge-container">
+                <div class="challenge-grid" id="challenge-grid">
+                    <p class="loading-message" data-translate="loading-challenge">Đang tải thử thách...</p>
+                </div>
+
+                <div class="challenge-submission" id="challenge-submission" style="display: none;">
+                    <h3 data-translate="submit-challenge">Nộp bài thử thách</h3>
+                    <form id="challenge-submission-form">
+                        <div class="file-upload-area" id="file-upload-area">
+                            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                            <p class="upload-text" data-translate="drag-drop-files">Kéo thả file vào đây hoặc click để chọn</p>
+                            <p class="upload-hint" data-translate="allowed-file-types">Cho phép: JPG, PNG, GIF, MP4, MOV (tối đa 50MB)</p>
+                            <input type="file" id="challenge-file" accept="video/*,image/*" required style="display: none;">
+                            <label for="challenge-file" class="ripple-btn"><i class="fas fa-upload"></i> <span data-translate="select-file">Chọn file</span></label>
+                        </div>
+
+                        <div class="file-preview" id="file-preview">
+                            <!-- Preview will be added dynamically -->
+                        </div>
+
+                        <div class="input-group">
+                            <textarea id="challenge-note" data-translate-placeholder="challenge-note-placeholder" placeholder="Ghi chú (tùy chọn)..." rows="4"></textarea>
+                        </div>
+
+                        <button type="submit" class="ripple-btn submit-btn" data-translate="submit-test">Nộp bài</button>
+                    </form>
+                </div>
+
+                <div class="challenge-history" id="challenge-history" style="display: none;">
+                    <h3 data-translate="challenge-history">Lịch sử thử thách</h3>
+                    <div class="history-list" id="history-list">
+                        <!-- History items will be added dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Videos Section -->
+    <section id="course-videos" class="section" style="display: none;">
+        <div class="container">
+            <div class="course-videos-header">
+                <h2 id="course-videos-title">Khóa Học Videos</h2>
+                <button id="back-to-courses" class="ripple-btn back-btn"><i class="fas fa-arrow-left"></i> Quay lại</button>
+            </div>
+            <div class="course-videos-description" id="course-videos-description">
+                <!-- Course description will be inserted here -->
+            </div>
+            <div class="course-videos-grid" id="course-videos-grid">
+                <p class="loading-message">Đang tải videos...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mini-Games Section -->
+    <section id="mini-games" class="section" style="display: none;">
+        <div class="container">
+            <h2 data-translate="mini-games">Mini-Game Học Tập</h2>
+            <div class="mini-game-grid" id="mini-game-grid">
+                <div class="content-card mini-game-card ripple-btn" data-game-type="music-note">
+                    <div class="mini-game-avatar" data-game-type="music-note"></div>
+                    <h3 data-translate="music-note">Đoán Nốt Nhạc</h3>
+                    <p data-translate="music-note-desc">Trò chơi đoán nốt nhạc với 3 cấp độ khó.</p>
+                    <div class="game-difficulty-levels">
+                        <button class="difficulty-btn level-1" data-game-type="guess-note" data-level="1">
+                            <span class="level-number">1</span>
+                            <span class="level-desc" data-translate="level-visual">Nhìn</span>
+                        </button>
+                        <button class="difficulty-btn level-2" data-game-type="listen-note" data-level="2">
+                            <span class="level-number">2</span>
+                            <span class="level-desc" data-translate="level-audio">Nghe</span>
+                        </button>
+                        <button class="difficulty-btn level-3" data-game-type="match-note" data-level="3">
+                            <span class="level-number">3</span>
+                            <span class="level-desc" data-translate="level-match">Ghép</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="content-card mini-game-card ripple-btn" data-game-type="guess-pose">
+                    <div class="mini-game-avatar" data-game-type="guess-pose"></div>
+                    <h3 data-translate="guess-pose">Đoán Thế Võ</h3>
+                    <p data-translate="guess-pose-desc">Xem hình và đoán tên thế võ Vovinam.</p>
+                </div>
+                <div class="content-card mini-game-card ripple-btn" data-game-type="guess-stance">
+                    <div class="mini-game-avatar" data-game-type="guess-stance"></div>
+                    <h3 data-translate="guess-stance">Đoán Thế Tấn</h3>
+                    <p data-translate="guess-stance-desc">Nhận diện thế tấn trong Vovinam qua hình ảnh.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mini-Game Modal -->
+    <div id="mini-game-modal" class="modal">
+        <div class="modal-content glass">
+            <span class="close-modal" title="X"><i class="fas fa-times"></i></span>
+            <div class="mini-game-header">
+                <h2 id="mini-game-title">Mini-Game</h2>
+                <div class="game-level-indicator" id="game-level-indicator">
+                    <span class="level-label" data-translate="level">Cấp độ</span>
+                    <span class="level-value">1</span>
+                </div>
+            </div>
+            <div id="mini-game-content">
+                <div id="game-image-container" style="margin-bottom: 20px; display: none;">
+                    <img id="game-image" src="" alt="Mini-game image" style="max-width: 100%; height: auto; border-radius: var(--border-radius);">
+                </div>
+                <div id="game-audio-container" style="margin-bottom: 20px; display: none;">
+                    <div class="audio-player">
+                        <audio id="game-audio" style="display: none;">
+                            <source id="game-audio-source" src="" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <div class="audio-controls">
+                            <button id="play-audio" class="audio-btn play-btn">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <div class="audio-progress">
+                                <div class="progress-bar" id="audio-progress-bar"></div>
+                            </div>
+                            <span class="audio-time" id="audio-time">0:00</span>
+                        </div>
+                    </div>
+                </div>
+                <p id="game-question" style="font-size: 1.2rem; margin-bottom: 15px;">Câu hỏi...</p>
+
+                <!-- Text input for levels 1-2 -->
+                <div id="text-answer-container">
+                    <input type="text" id="game-answer" class="input-field" data-translate-placeholder="enter-answer" placeholder="Nhập câu trả lời">
+                </div>
+
+                <!-- Multiple choice for level 3 -->
+                <div id="multiple-choice-container" style="display: none;">
+                    <div class="multiple-choice-grid" id="multiple-choice-grid">
+                        <!-- Options will be added dynamically -->
+                    </div>
+                </div>
+
+                <div id="game-feedback" class="feedback-area" style="margin-top: 15px; font-weight: 600;"></div>
+                <button id="game-submit-btn" class="ripple-btn submit-btn" data-translate="submit-test">Nộp bài</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Teacher Dashboard -->
+    <section id="teacher-dashboard" class="section" style="display: none;">
+        <div class="container">
+            <h2 data-translate="teacher-dashboard">Giao Diện Giảng Viên</h2>
+            <p data-translate="review-submissions">Xem và đánh giá bài nộp của sinh viên.</p>
+
+            <!-- Teacher Analytics -->
+            <div id="teacher-analytics-container" class="teacher-analytics-container">
+                <p class="loading-message" data-translate="loading-analytics">Đang tải phân tích...</p>
+            </div>
+
+            <!-- Tabs for different sections -->
+            <div class="teacher-tabs">
+                <button class="teacher-tab-btn active" data-tab="submissions" data-translate="submissions">Bài nộp</button>
+                <button class="teacher-tab-btn" data-tab="feedback" data-translate="feedback">Phản hồi</button>
+                <button class="teacher-tab-btn" data-tab="students" data-translate="students">Học viên</button>
+            </div>
+
+            <!-- Submissions Tab -->
+            <div class="teacher-tab-content active" id="submissions-tab">
+                <div class="teacher-content">
+                    <div class="feedback-list" id="feedback-list">
+                        <p class="loading-message" data-translate="loading-submissions">Đang tải bài nộp...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feedback Tab -->
+            <div class="teacher-tab-content" id="feedback-tab">
+                <div class="teacher-content">
+                    <div class="feedback-list" id="teacher-feedback-list">
+                        <p class="loading-message" data-translate="loading-feedback">Đang tải phản hồi...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Students Tab -->
+            <div class="teacher-tab-content" id="students-tab">
+                <div class="teacher-content">
+                    <div id="teacher-students-list" class="teacher-students-list">
+                        <p class="loading-message" data-translate="loading-students">Đang tải danh sách học viên...</p>
+                    </div>
+                    <div id="teacher-student-details" class="teacher-student-details">
+                        <!-- Student details will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Section -->
+    <section id="profile" class="section" style="display: none;">
+        <canvas id="particles-js-profile"></canvas>
+        <div class="container">
+            <h2 data-translate="profile">Thông Tin Cá Nhân</h2>
+            <div class="profile-content" id="profile-view">
+                <p class="loading-message" data-translate="loading-profile">Đang tải hồ sơ...</p>
+            </div>
+            <div id="edit-profile-form" class="edit-profile-form" style="display: none;">
+                <h3 data-translate="edit-profile">Chỉnh sửa Thông Tin</h3>
+                <form id="edit-profile-form-inputs">
+                    <div class="input-group">
+                        <label for="edit-name" data-translate="new-name">Tên Mới</label>
+                        <input type="text" id="edit-name" class="input-field" placeholder="..." value="">
+                    </div>
+                    <button type="submit" class="ripple-btn save-btn" data-translate="save-changes">Lưu thay đổi</button>
+                    <button type="button" class="ripple-btn cancel-btn" onclick="toggleEditProfile(false)" data-translate="cancel">Hủy</button>
+                </form>
+            </div>
+
+            <!-- Hidden file input for avatar upload -->
+            <input type="file" id="avatar-upload" accept=".jpg,.jpeg,.png,.gif,.webp" style="display: none;">
+
+            <!-- Avatar Upload Modal -->
+            <div id="avatar-upload-modal" class="modal">
+                <div class="modal-content glass">
+                    <span class="close-modal" data-translate-title="true" data-translate="close" title="Đóng"><i class="fas fa-times"></i></span>
+                    <h2 data-translate="change-avatar">Đổi Ảnh Đại Diện</h2>
+                    <div class="avatar-preview-container">
+                        <img id="avatar-preview" src="./assets/images/placeholder.png" alt="Preview">
+                    </div>
+                    <form id="avatar-upload-form" class="avatar-upload-form">
+                        <div class="input-group">
+                            <label for="avatar-file" class="file-upload-label ripple-btn">
+                                <i class="fas fa-upload"></i> <span data-translate="select-file">Chọn Ảnh</span>
+                            </label>
+                            <input type="file" id="avatar-file" accept=".jpg,.jpeg,.png,.gif,.webp" style="display: none;">
+                            <span id="avatar-file-name" class="file-name" data-translate="no-file-chosen">Chưa chọn file</span>
+                        </div>
+                        <div class="avatar-upload-actions">
+                            <button type="submit" class="ripple-btn submit-btn" data-translate="save-changes">Lưu thay đổi</button>
+                            <button type="button" class="ripple-btn cancel-btn" id="cancel-avatar-upload" data-translate="cancel">Hủy</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Change Password Modal -->
+    <div id="change-password-modal" class="modal">
+        <div class="modal-content glass">
+            <span class="close-modal" data-translate-title="true" data-translate="close" title="Đóng"><i class="fas fa-times"></i></span>
+            <h2 data-translate="change-password">Đổi Mật Khẩu</h2>
+            <form id="change-password-form">
+                <div class="input-group">
+                    <input type="password" id="current-password" class="input-field" data-translate-placeholder="current-password" placeholder="Mật khẩu hiện tại" required autocomplete="current-password">
+                </div>
+                <div class="input-group">
+                    <input type="password" id="new-password" class="input-field" data-translate-placeholder="new-password" placeholder="Mật khẩu mới (ít nhất 6 ký tự)" required minlength="6" autocomplete="new-password">
+                </div>
+                <div class="input-group">
+                    <input type="password" id="confirm-password" class="input-field" data-translate-placeholder="confirm-new-password" placeholder="Xác nhận mật khẩu mới" required minlength="6" autocomplete="new-password">
+                </div>
+                <button type="submit" class="ripple-btn submit-btn" data-translate="update">Cập nhật</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Ranking Section -->
+    <section id="ranking" class="section" style="display: none;">
+        <canvas id="particles-js-ranking"></canvas>
+        <div class="container">
+            <h2 data-translate="ranking">Bảng Xếp Hạng</h2>
+            <!-- Removed status indicator -->
+            <div class="ranking-frame">
+                <div class="ranking-list" id="ranking-list">
+                    <p class="loading-message" data-translate="loading-ranking">Đang tải bảng xếp hạng...</p>
+                </div>
+                <div class="ranking-controls" style="display: none;">
+                    <button class="scroll-up-btn ripple-btn" data-translate-title="true" data-translate="scroll-up" title="Cuộn lên" disabled><i class="fas fa-chevron-up"></i></button>
+                    <button class="scroll-down-btn ripple-btn" data-translate-title="true" data-translate="scroll-down" title="Cuộn xuống" disabled><i class="fas fa-chevron-down"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feedback Section -->
+    <section id="feedback" class="section" style="display: none;">
+        <div class="container">
+            <h2 data-translate="feedback">Phản Hồi & Đề Xuất</h2>
+            <div class="feedback-content">
+                <p data-translate="feedback-prompt" class="feedback-intro">Gửi phản hồi của bạn để giúp chúng tôi cải thiện hệ thống:</p>
+                <form id="feedback-form" class="enhanced-form">
+                    <div class="input-group feedback-input-group">
+                        <i class="fas fa-comment-dots feedback-icon"></i>
+                        <textarea id="feedback-text-user" data-translate-placeholder="feedback-input-placeholder" placeholder="Nhập phản hồi của bạn..." rows="6" required></textarea>
+                        <div class="floating-label-container">
+                            <label for="feedback-text-user" class="floating-label" data-translate="feedback-label">Ý kiến của bạn</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="ripple-btn submit-btn feedback-submit-btn" data-translate="send-feedback"><i class="fas fa-paper-plane"></i> Gửi phản hồi</button>
+                </form>
+                <hr style="margin: 30px 0;">
+                <h3 data-translate="your-submitted-feedback">Phản hồi đã gửi của bạn</h3>
+                <div id="user-feedback-list" class="feedback-list user-view">
+                    <p class="loading-message" data-translate="loading-feedback">Đang tải phản hồi...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content glass">
+            <span class="close-modal" data-translate-title="true" data-translate="close" title="Đóng"><i class="fas fa-times"></i></span>
+            <div class="auth-form">
+                <h2 id="modal-title" data-translate="login">Đăng nhập</h2>
+                <form id="auth-form">
+                    <div class="input-group" id="signup-name-group" style="display: none;">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="signup-name" class="input-field" data-translate-placeholder="enter-name" placeholder="Tên của bạn" autocomplete="name">
+                        <span class="error" id="name-error"></span>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="auth-email" class="input-field" data-translate-placeholder="enter-email" placeholder="Email" required autocomplete="email">
+                        <span class="error" id="email-error"></span>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="auth-password" class="input-field" data-translate-placeholder="enter-password" placeholder="Mật khẩu" required autocomplete="current-password">
+                        <span class="error" id="password-error"></span>
+                    </div>
+                    <button type="submit" class="auth-submit ripple-btn submit-btn" data-translate="login">Đăng nhập</button>
+                </form>
+                <p class="toggle-auth"><span id="toggle-auth-prompt" data-translate="toggle-auth-prompt">Chưa có tài khoản?</span> <a href="#" id="toggle-link" data-translate="signup">Đăng ký</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot -->
+    <div id="chatbot" class="chatbot-container" style="display: none;">
+        <div class="chatbot-header">
+            <div class="chatbot-title">
+                <i class="fas fa-robot"></i>
+                <span data-translate="fpt-assistant">Trợ lý FPT</span>
+            </div>
+            <div class="chatbot-controls">
+                <button class="chatbot-control-btn" id="toggle-speech-btn" data-translate-title="true" data-i18n-aria="enable-speech" aria-label="Bật/Tắt giọng nói" title="Bật/Tắt giọng nói"><i class="fas fa-volume-up"></i></button>
+                <button class="chatbot-control-btn" id="export-history-btn" data-translate-title="true" data-i18n-aria="export-history" aria-label="Xuất lịch sử chat" title="Xuất lịch sử chat"><i class="fas fa-download"></i></button>
+                <button class="chatbot-control-btn" id="clear-cache-btn" data-translate-title="true" data-i18n-aria="clear-history" aria-label="Xóa lịch sử chat" title="Xóa lịch sử chat"><i class="fas fa-trash"></i></button>
+                <button class="chatbot-control-btn" id="close-chatbot" data-translate-title="true" data-i18n-aria="close-chat" aria-label="Đóng chat" title="Đóng chat"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+        <div class="chatbot-messages" id="chatbot-body" aria-live="polite">
+        </div>
+
+        <div class="chatbot-input">
+            <input type="text" id="chat-input" data-translate-placeholder="chat-input-placeholder" placeholder="Nhập câu hỏi..." aria-label="Nhập câu hỏi cho trợ lý">
+            <button id="start-speech-btn" class="ripple-btn" data-translate-title="true" data-i18n-aria="start-speech" aria-label="Nói để nhập" title="Nói để nhập"><i class="fas fa-microphone"></i></button>
+            <button id="send-msg" class="ripple-btn" data-translate-title="true" data-i18n-aria="send" aria-label="Gửi tin nhắn" title="Gửi"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+    <button id="chatbot-toggle" class="chatbot-toggle ripple-btn" data-translate-title="true" data-i18n-aria="toggle-chatbot" aria-label="Mở Trợ lý FPT" title="Mở Trợ lý FPT"><i class="fas fa-comment-alt"></i></button>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>FPT Learning Hub</h3>
+                    <p>Nền tảng học tập trực tuyến miễn phí dành cho sinh viên FPT.</p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="Facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3 data-translate="links">Liên kết</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" data-section="explore"><i class="fas fa-graduation-cap"></i> Khám phá</a></li>
+                        <li><a href="#" data-section="flashcards"><i class="fas fa-clone"></i> Ôn tập Flashcard</a></li>
+                        <li><a href="#" data-section="ranking"><i class="fas fa-trophy"></i> Xếp hạng</a></li>
+                        <li><a href="#" data-section="challenges"><i class="fas fa-flag"></i> Thử thách</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3 data-translate="support">Hỗ trợ</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" data-section="feedback"><i class="fas fa-comment-dots"></i> Phản hồi</a></li>
+                        <li><a href="https://fpt.edu.vn/policy" target="_blank" rel="noopener noreferrer"><i class="fas fa-shield-alt"></i> Chính sách</a></li>
+                        <li><a href="#" data-section="profile"><i class="fas fa-user"></i> Hồ sơ</a></li>
+                        <li><a href="#" id="open-chatbot"><i class="fas fa-robot"></i> Trợ lý ảo</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3 data-translate="contact">Liên hệ</h3>
+                    <div class="footer-contact">
+                        <div class="footer-contact-item">
+                            <i class="far fa-envelope"></i>
+                            <a href="mailto:support@fpt.edu.vn">qnuni@fe.edu.vn</a>
+                        </div>
+                        <div class="footer-contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>(+84) 256 7300 999</span>
+                        </div>
+                        <div class="footer-contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Đại học FPT Quy Nhơn, Khu đô thị mới An Phú Thịnh, TP. Quy Nhơn, Bình Định</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 FPT Learning Hub - Được xây dựng bởi AI 19C.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
